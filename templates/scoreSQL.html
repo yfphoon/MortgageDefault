@@ -2,6 +2,16 @@
 {% block body %}
 
 <br>
+
+{% if response_scoring.json()["values"][0][19]==0.0 %}
+    <h2>This mortgage load has a higher probability to NOT DEFAULT!</h2>
+    {% endif %}
+                
+{% if response_scoring.json()["values"][0][19]==1.0 %}
+    <h2>This mortgage loan has a higher probability to DEFAULT</h2>
+    {% endif %}
+
+<p>Probability of default = {{ "{:.2f}".format(response_scoring.json()["values"][0][18][1]*100) }}%</p>
 <br>
 
 <table>
@@ -57,38 +67,7 @@
 
 <br>
 <br>
-{% if response_scoring.json()["result"]["prediction"]==0.0 %}
-    <h2>This mortgage load has a higher probability to DEFAULT than not!</h2>
-    {% endif %}
-                
-{% if response_scoring.json()["result"]["prediction"]==1.0 %}
-    <h2>This mortgage loan has a higher probability to NOT DEFAULT than to default </h2>
-    {% endif %}
 
-<p>Probability of default = {{ "${:.2f}".format(response_scoring.json()["result"]["probability"]["values"][0]*100) }}%</p>
-
-<br>
-<form action="{{ url_for('saveData') }}" method="post" class = "add-entry">
-<label for = "save"><strong>Click to save prediction to database:</strong></label>
-        <input id="save" name="save" type="checkbox" value="yes" onchange= "saveDatabase()"/> <br/>
-        <br>
-  <div id = "firstlastname">
-  <dl>
-        <label for = "FirstName"<dt>Applicant First Name:</dt></label>
-        <dd>       
-              <input type = "text" name = "FirstName" id = "FirstName"><br/>
-          </dd><br>
-        <label for = "LastName"><dt>Applicant Last Name:</dt></label>
-        <dd>
-              <input type = "text" name = "LastName" id = "LastName"><br/>
-        </dd><br>
-  </dl>
-  <input type = "submit" value = "Save"/>
-  <br><br>
-  </div>
-</form>
-
-<br>
 <p><strong>Click the Mortgage Default link in the navigation bar above to make another prediction.</strong></p>
 
 
